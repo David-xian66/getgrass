@@ -8,7 +8,7 @@ on:
       - 'v*'
 
 jobs:
-  build:
+  构建:
     runs-on: ubuntu-latest
 
     steps:
@@ -23,7 +23,9 @@ jobs:
         echo "::set-output name=download_path::$(pwd)/temp_download/pystand.zip"
 
     - name: 创建构建目录
-      run: mkdir build
+      run: |
+        mkdir build
+        mkdir temp_extract
 
     - name: 解压 PyStand.zip
       run: |
@@ -57,10 +59,10 @@ jobs:
         name: build-artifact
         path: build
 
-  release:
-    needs: build
+  发布:
+    needs: 构建
     runs-on: ubuntu-latest
-    # if: startsWith(github.ref, 'refs/tags/')
+    if: startsWith(github.ref, 'refs/tags/')
     steps:
     - name: 下载构建产物
       uses: actions/download-artifact@v2

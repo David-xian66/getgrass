@@ -25,6 +25,7 @@ jobs:
     - name: 创建构建目录
       run: |
         mkdir build
+        mkdir build/install_dir
         mkdir temp_extract
 
     - name: 解压 PyStand.zip

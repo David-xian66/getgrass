@@ -25,6 +25,7 @@ jobs:
     - name: 创建构建目录
       run: |
         mkdir build
+        mkdir release
         mkdir build/install_dir
         mkdir temp_extract
 
@@ -43,6 +44,9 @@ jobs:
       run: |
         curl -L https://github.com/David-xian66/PyStand/releases/download/vA/getGrass_Run.zip -o temp_download/getGrass_Run.zip
 
+    - name: 清理temp_extract
+      run: rm -r temp_extract/*
+
     - name: 解压 getGrass_Run.zip
       run: unzip -q temp_download/getGrass_Run.zip -d temp_extract
 
@@ -52,7 +56,8 @@ jobs:
         cp -r temp_extract/* build/
 
     - name: 压缩构建目录
-      run: zip -r build.zip build
+      run: |
+        7z a release/build.zip build
 
     - name: 查看构建产物
       run: ls -laR build
@@ -61,7 +66,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: build-artifact
-        path: build
+        path: release
 
   release:
     if: startsWith(github.ref, 'refs/tags/')
@@ -72,7 +77,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: build-artifact
-        path: build
+        path: release
 
     - name: 查看构建产物
       run: ls -laR build
@@ -84,4 +89,4 @@ jobs:
       with:
         generate_release_notes: true
         files: |
-          build/build.zip
+          release/build.zip

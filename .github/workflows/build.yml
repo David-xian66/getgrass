@@ -70,6 +70,12 @@ jobs:
         name: build-artifact
         path: build
 
+    - name: 创建安装目录
+      run: mkdir -p build/install_dir
+
+    - name: 拷贝构建产物
+      run: cp -r build/* build/install_dir/
+
     - name: 发布
       uses: softprops/action-gh-release@v1
       env:

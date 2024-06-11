@@ -59,8 +59,8 @@ jobs:
       run: |
         7z a release/build.zip build
 
-    - name: 查看构建产物
-      run: ls -laR build
+    - name: (DEBUG)查看构建产物
+      run: ls -laR ./
 
     - name: 上传构建产物
       uses: actions/upload-artifact@v2
@@ -79,8 +79,8 @@ jobs:
         name: build-artifact
         path: release
 
-    - name: 查看构建产物
-      run: ls -laR build
+    - name: (DEBUG)查看构建产物
+      run: ls -laR ./
 
     - name: 发布
       uses: softprops/action-gh-release@v1

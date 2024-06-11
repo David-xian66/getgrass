@@ -19,7 +19,7 @@ jobs:
       id: download_pystand
       run: |
         mkdir temp_download
-        curl -L $(curl -s https://api.github.com/repos/David-xian66/PyStand/releases/latest | grep "browser_download_url.*\.zip" | cut -d : -f 2,3 | tr -d \") -o temp_download/pystand.zip
+        curl -L "https://github.com/David-xian66/PyStand/releases/download/v1.0.5/PyStand.zip" -o temp_download/pystand.zip
         echo "::set-output name=download_path::$(pwd)/temp_download/pystand.zip"
 
     - name: 创建构建目录

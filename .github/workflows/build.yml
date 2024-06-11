@@ -54,6 +54,9 @@ jobs:
     - name: 压缩构建目录
       run: zip -r build.zip build
 
+    - name: 查看构建产物
+      run: ls -laR build
+
     - name: 上传构建产物
       uses: actions/upload-artifact@v2
       with:
@@ -70,6 +73,9 @@ jobs:
       with:
         name: build-artifact
         path: build
+
+    - name: 查看构建产物
+      run: ls -laR build
 
     - name: 发布
       uses: softprops/action-gh-release@v1

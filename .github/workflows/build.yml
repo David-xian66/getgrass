@@ -61,9 +61,9 @@ jobs:
         path: build
 
   release:
+    if: startsWith(github.ref, 'refs/tags/')
     needs: build
     runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/')
     steps:
     - name: 下载构建产物
       uses: actions/download-artifact@v2

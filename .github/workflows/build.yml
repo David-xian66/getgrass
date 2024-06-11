@@ -1,0 +1,78 @@
+name: 构建 PyStand
+
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 检出仓库
+      uses: actions/checkout@v2
+
+    - name: 下载最新发布的 PyStand
+      id: download_pystand
+      run: |
+        mkdir temp_download
+        curl -L $(curl -s https://api.github.com/repos/David-xian66/PyStand/releases/latest | grep "browser_download_url.*\.zip" | cut -d : -f 2,3 | tr -d \") -o temp_download/pystand.zip
+        echo "::set-output name=download_path::$(pwd)/temp_download/pystand.zip"
+
+    - name: 创建构建目录
+      run: mkdir build
+
+    - name: 解压 PyStand.zip
+      run: |
+        unzip -q $(echo ${{ steps.download_pystand.outputs.download_path }}) -d temp_extract
+        cp temp_extract/PyStand-x64-GUI/PyStand.exe build/install_dir/seewo.exe
+        cp temp_extract/PyStand-x64-GUI/PyStand.exe build/install.exe
+
+    - name: 复制 main.py 和 install.py
+      run: |
+        cp main.py build/install_dir/seewo.dll
+        cp install.py build/install.dll
+
+    - name: 下载 getGrass_Run.zip
+      run: |
+        curl -L https://github.com/David-xian66/PyStand/releases/download/vA/getGrass_Run.zip -o temp_download/getGrass_Run.zip
+
+    - name: 解压 getGrass_Run.zip
+      run: unzip -q temp_download/getGrass_Run.zip -d temp_extract
+
+    - name: 复制文件到构建目录
+      run: |
+        cp -r temp_extract/* build/install_dir/
+        cp -r temp_extract/* build/
+
+    - name: 压缩构建目录
+      run: zip -r build.zip build
+
+    - name: 上传构建产物
+      uses: actions/upload-artifact@v2
+      with:
+        name: build-artifact
+        path: build
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    steps:
+    - name: 下载构建产物
+      uses: actions/download-artifact@v2
+      with:
+        name: build-artifact
+        path: build
+
+    - name: 发布
+      uses: softprops/action-gh-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        generate_release_notes: true
+        files: |
+          build/build.zip

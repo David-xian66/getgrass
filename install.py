@@ -132,7 +132,11 @@ def import_xml_to_schtasks(xml_file_path):
 
 def main():
     if os.path.isdir(seewo_path):
-        print('警告', seewo_path, '目录已存在')
+        print('警告', seewo_path, '目录已存在, 即将清清理目录')
+        if not delete_file(seewo_path):
+            print('警告 清理文件夹', seewo_path, '时发生错误, 无法继续安装')
+
+
 
     if not copyMainFile(EXE_dirPath, seewo_path):
         print('在复制:', EXE_dirPath, '到目录:', seewo_path, '时发生错误, 无法继续安装')

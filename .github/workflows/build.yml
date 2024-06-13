@@ -53,11 +53,9 @@ jobs:
 
     - name: 解压 getGrass_Run.zip getGrass_install_Run.zip
       run: |
-        unzip -q temp_download/getGrass_Run.zip -d temp_extract\getGrass_Run
-        unzip -q temp_download/getGrass_install_Run.zip -d temp_extract\getGrass_install_Run
+        unzip -q temp_download/getGrass_Run.zip -d temp_extract/getGrass_Run
+        unzip -q temp_download/getGrass_install_Run.zip -d temp_extract/getGrass_install_Run
 
-    - name: (DEBUG)
-      run: ls -laR ./
 
     - name: 复制文件到构建目录
       run: |

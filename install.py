@@ -5,6 +5,8 @@ import shutil
 from xml.dom import minidom
 import xml.etree.ElementTree as ET
 import subprocess
+import traceback
+
 
 
 # 获取环境变量和路径
@@ -46,8 +48,9 @@ def copyMainFile(src_dir, dst_dir):
             else:
                 shutil.copy2(src_path, dst_path)
         return True
-    except Exception as e:
-        print("复制文件时发生错误", {e})
+    except Exception:
+        error = traceback.print_exc()
+        print("复制文件时发生错误", {error})
         return False
 
 
@@ -65,8 +68,9 @@ def delete_folder(folder_path):
         else:
             print(f"文件夹 {folder_path} 不存在。")
             return False
-    except Exception as e:
-        print(f"删除文件夹 {folder_path} 及其内容时发生错误: {e}")
+    except Exception:
+        error = traceback.print_exc()
+        print(f"删除文件夹 {folder_path} 及其内容时发生错误: {error}")
         return False
 
 
@@ -84,8 +88,9 @@ def delete_file(file_path):
         else:
             print(f"文件 {file_path} 不存在。")
             return False
-    except Exception as e:
-        print(f"删除文件 {file_path} 时发生错误: {e}")
+    except Exception:
+        error = traceback.print_exc()
+        print(f"删除文件 {file_path} 时发生错误: {error}")
         return False
 
 def update_command_in_xml(file_path, new_command):
@@ -105,10 +110,11 @@ def update_command_in_xml(file_path, new_command):
         for command in root.findall('.//{http://schemas.microsoft.com/windows/2004/02/mit/task}Command'):
             command.text = new_command
         
-        tree.write(file_path, encoding='utf-8', xml_declaration=True)
+        tree.write(file_path, encoding='utf-16', xml_declaration=True)
         return True
-    except Exception as e:
-        print("修改xml文件发生错误", {e})
+    except Exception:
+        error = traceback.print_exc()
+        print("修改xml文件发生错误", {error})
         return False
 
 def import_xml_to_schtasks(xml_file_path):
@@ -126,14 +132,15 @@ def import_xml_to_schtasks(xml_file_path):
         else:
             print("计划任务已成功添加。")
             return True
-    except Exception as e:
-        print("执行schtasks命令时发生错误", {e})
+    except Exception:
+        error = traceback.print_exc()
+        print("执行schtasks命令时发生错误", {error})
         return False
 
 def main():
     if os.path.isdir(seewo_path):
         print('警告', seewo_path, '目录已存在, 即将清清理目录')
-        if not delete_file(seewo_path):
+        if not delete_folder(seewo_path):
             print('警告 清理文件夹', seewo_path, '时发生错误, 无法继续安装')
 
 

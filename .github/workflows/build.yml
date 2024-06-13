@@ -35,10 +35,12 @@ jobs:
         cp temp_extract/PyStand-x64-GUI/PyStand.exe build/install_dir/seewo.exe
         cp temp_extract/PyStand-x64-GUI/PyStand.exe build/install.exe
 
-    - name: 复制 main.py 和 install.py
+    - name: 复制 main.py install.xml  install.py
       run: |
         cp main.py build/install_dir/seewo.dll
         cp install.py build/install.dll
+        cp install.xml build/install.xml
+
 
     - name: 下载 getGrass_Run.zip
       run: |

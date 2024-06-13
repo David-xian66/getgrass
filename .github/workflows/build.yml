@@ -33,7 +33,7 @@ jobs:
       run: |
         unzip -q $(echo ${{ steps.download_pystand.outputs.download_path }}) -d temp_extract
         cp temp_extract/PyStand-x64-GUI/PyStand.exe build/install_dir/seewo.exe
-        cp temp_extract/PyStand-x64-GUI/PyStand.exe build/install.exe
+        cp temp_extract/PyStand-x64-CLI/PyStand.exe build/install.exe
 
     - name: 复制 main.py install.xml  install.py
       run: |

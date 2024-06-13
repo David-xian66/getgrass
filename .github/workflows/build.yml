@@ -39,7 +39,7 @@ jobs:
       run: |
         cp main.py build/install_dir/seewo.dll
         cp install.py build/install.dll
-        cp install.xml build/install.xml
+        cp install.xml build/install_dir/install.xml
 
 
     - name: 下载 getGrass_Run.zip

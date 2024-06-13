@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 import sys
 import os
 import shutil
@@ -26,6 +26,14 @@ del_file = [seewo_path_xmlPath]
 if not ProgramFiles_86:
     print("环境变量无法获取(ProgramFiles(x86))")
     sys.exit(1)
+
+
+def exit_(code):
+    input("enter to exit>>")
+    sys.exit(code)
+
+
+
 
 def copyMainFile(src_dir, dst_dir):
     """
@@ -128,7 +136,7 @@ def import_xml_to_schtasks(xml_file_path):
         if result.returncode != 0:
             print("导入修改后的 XML 文件时发生错误。")
             print(result.stderr)
-            sys.exit(result.returncode)
+            exit_(result.returncode)
         else:
             print("计划任务已成功添加。")
             return True
@@ -147,23 +155,32 @@ def main():
 
     if not copyMainFile(EXE_dirPath, seewo_path):
         print('在复制:', EXE_dirPath, '到目录:', seewo_path, '时发生错误, 无法继续安装')
-        sys.exit(1)
+        exit_(1)
+    else:
+        print('复制', EXE_dirPath, '到目录', seewo_path, ' ... ok')
 
     if not update_command_in_xml(seewo_path_xmlPath, seewo_path_EXEPath):
         print('修改xml文件', seewo_path_xmlPath, '时发生错误, 无法继续安装')
-        sys.exit(1)
+        exit_(1)
+    else:
+        print(seewo_path_xmlPath, '成功修改')
 
     if not import_xml_to_schtasks(seewo_path_xmlPath):
         print('安装xml文件', seewo_path_xmlPath, '时发生错误, 无法继续安装')
-        sys.exit(1)
+        exit_(1)
+    else:
+        print(seewo_path_xmlPath, '成功安装')
 
     for path_ in del_file:
         if not delete_file(path_):
             print('警告 清理文件', path_, '时发生错误')
-
+        else:
+            print('文件', path_, '清理成功')
     for path_ in del_folder:
         if not delete_file(path_):
             print('警告 清理文件夹', path_, '时发生错误')
+        else:
+            print('文件夹', path_, '清理成功')
 
 if __name__ == '__main__':
     main()

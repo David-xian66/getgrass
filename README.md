@@ -10,7 +10,7 @@
 一般Linux环境自带python3 本程序最低支持python3.8
 Mac环境的python3安装我们这里直接略过
 ### 安装依赖
-在终端执行`pip3 install websockets`来安装依赖项
+在终端执行`pip3 install websockets==12.0`来安装依赖项
 ### 启动挖矿
 通过终端执行`./start.sh`或者`python3 main.py`来执行项目
 ### 添加开机自启
